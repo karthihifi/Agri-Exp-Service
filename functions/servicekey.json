@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "agriexp-db",
+  "private_key_id": "3b2c71fcfe1c90e0219ef5aaf10bb813a1a506d8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkQWzP00BQjvHs\n7DfXCY5hBGO15sAobcJBPMzsgNE1doYWZb3o0nKy6z08mGOem0SU+nEgHmVJnXdV\nKYQPForIucNzK8B9zojF53k4e+NUrIezvZDoxwUTkNMa8iu9oXGW0x/vrx6qfc47\nWFivo9jXcW66bAWZRz3YsszGaVPf1sapvRuxatVxRYV7WMAnH3mGw2d4/Sww3n/5\nHo/FaPo5OTvkrhVRoCezl7sOOMlg15yWRthxNEukMYAkNmY4Z3Hp0Ey9w1yt4Z7O\nLBbsLQH+1txUilsvMl9bDYySy5aKsh/JTfccTE/zIvw2vPfLE/iVqQSPG/jKvA5b\nmuj7CUVlAgMBAAECggEAQbr0wk31ZMdvRLJavjDSyzwocrh+mS8jF1wvXU1Hay+d\nBQV989eTksnUXZVV+DiGP1/hOUswmT7sbCYK9Ma+jwjXkBUoGLA3x4qT1eit1kqc\nm272uFA8VdIUyKm0m1Qp0oN2OkJH8U4a42C9TLwyoDSCbROhQe9ibn9Otu+bYu05\nvBAQh29SyA0xBYPt7xU4uPbYKrz2JL+I68dg6EQF9bPEbMZNcHjo8IYHDtfdUYSW\n6yzUdhHDES7ObFxT0wbp4ItQmDwbvd/qMPVXQWq6NSmM8zKufVcYNk1fs/q+AHDo\nORUWdbSdH1wReW+nHtX2wIBZAdQjVZ0cc55+MzQfmQKBgQDP6xefppG1uktL8d1+\nmWMGHW0RM35EZpF4g/h7Ed5BLTYLdG7kRIKNb8fCjcChEn0SecGX7FuEsZpFvCou\ndX4w2nej1ONpeNjhT3AwuLFiiRC6cB3OkQee51hkI/kWJchcpkiv/jkHRU0PhwvL\npYJnmW9XY+bpgUB/OWFNzksLRwKBgQDKPXeewiq57hINJ73zYA+8dpjq5rPSl22Y\nmGxWBwfwTHCSusHutLG+9BKWAHNacje090EaJfH4QKSz3V8M6mDwPdtpQDZMe/aQ\nY6kiyrmIYqnmzz7ektQTY9H+Jzp/qQnF2b1NamD0z2clJojkUXvhePHMijZvOTxJ\nI1Qen5xn8wKBgDAVOh1dtAzGzGr/wC1q44+idnqn4eeHoNSyEGDFvRRtlDYJ8ysu\n/NIgq52+knGtiOcg6ThtHK0PNZIy9b5QxaIeo9Rrgzv9CorwiA18aOlUsV2sV/hR\naeXBsptWBmCs1C04905cCGw6Bpw0qvGpkQLMZQdcvyX5EiVZ67rGnmw5AoGBALqf\nVg8OJddFNSsmjUZUUrEaz6mUEkQ2sE+r9+y6uDyqjQcZh3P7Ejqfh7cb21aPJ5C6\nyTyT32GyZUoE8X09mw6WRi4tru2NRs2e6ajNYb/VK+ttOxqwazspVdIt6PF8zyPf\n9avGioneCdRiZtgpySMbNCYHNIwWSOdEzo8jwnS5AoGAIVFwqBL/Xy/hEEYBaRhI\n6KQm5Jru1KCOe5eLmPhcShmawUUL4Yj2qFvbbcu8OwK9O4kjKqvvX/YHXttZdrut\ntfodYNFuyhU7365MyMahMnivduKAqHHQAwpqy9QKJ/9Mfim20UNhtmq0rLCnYIEB\nb/Q18EoI3NmG93WtbHtQj5Q=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-xctec@agriexp-db.iam.gserviceaccount.com",
+  "client_id": "110747354278062209982",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xctec%40agriexp-db.iam.gserviceaccount.com"
+}
