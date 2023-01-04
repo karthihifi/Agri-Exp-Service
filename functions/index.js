@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const express = require("express");
 const admin = require("firebase-admin");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const {
   getFirestore,
   Timestamp,
@@ -19,6 +20,7 @@ const ProductsRef = db.collection("Products");
 // const conn = hana.createConnection();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json({ type: "application/*+json" }));
 // app.use(
 //   bodyParser.urlencoded({
@@ -91,6 +93,9 @@ const getProductsData = async () => {
   Products.forEach((doc) => {
     Productitem = doc.data();
     Productitem.id = doc.id;
+    let epochTimestamp = Productitem.Createdon.toMillis();
+    Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+    Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
     ProductData.push(Productitem);
   });
   return ProductData;
