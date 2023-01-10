@@ -9,6 +9,7 @@ const {
   FieldValue,
 } = require("firebase-admin/firestore");
 const credentials = require("./servicekey.json");
+const AgriImpexModal = require("./Modal");
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
@@ -17,6 +18,11 @@ admin.initializeApp({
 const db = admin.firestore();
 const batch = db.batch();
 const ProductsRef = db.collection("Products");
+const CurrSeasonRef = db
+  .collection("YieldStats")
+  .doc(AgriImpexModal.currentSeason);
+
+const AgriImpexModalRef = AgriImpexModal();
 // const conn = hana.createConnection();
 
 const app = express();
@@ -102,7 +108,9 @@ const getProductsData = async () => {
 };
 
 const setProductData = async (Product) => {
-  const res = await ProductsRef.add(Product);
+  const AreaRef = CurrSeasonRef.collection(Product.Area);
+  const res = await AreaRef.add(Product);
+  //const res = await ProductsRef.add(Product);
   console.log("Added document with ID: ", res.id);
   return res.id;
 };
