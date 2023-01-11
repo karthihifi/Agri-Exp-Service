@@ -49,6 +49,7 @@ app.post("/Product", function (req, res) {
 
   let Productlist = [];
   let Product = {
+    Area: req.body.Area,
     Product: req.body.Product,
     Variety: req.body.Variety,
     Length: req.body.Length,
@@ -107,12 +108,33 @@ const getProductsData = async () => {
   return ProductData;
 };
 
+// const setProductData = async (Product) => {
+//   const AreaRef = CurrSeasonRef.collection(Product.Area);
+//   const res = await AreaRef.add(Product);
+//   //const res = await ProductsRef.add(Product);
+//   console.log("Added document with ID: ", res.id);
+//   return res.id;
+// };
+
 const setProductData = async (Product) => {
-  const AreaRef = CurrSeasonRef.collection(Product.Area);
-  const res = await AreaRef.add(Product);
-  //const res = await ProductsRef.add(Product);
-  console.log("Added document with ID: ", res.id);
-  return res.id;
+  const snapshot = await CurrSeasonRef.get();
+  console.log(Product.Area, "Sanapshot");
+  let Productid = "";
+  if (!snapshot.empty) {
+    //The collection doesn't exist.
+    const AreaRef = CurrSeasonRef.collection(String(Product.Area));
+    const res = await AreaRef.add(Product);
+    //const res = await ProductsRef.add(Product);
+    console.log("Added document with ID: ", res.id);
+    Productid = res.id;
+  } else {
+    const AreaRef = CurrSeasonRef.collection(String(Product.Area));
+    const res = await AreaRef.add(Product);
+    //const res = await ProductsRef.add(Product);
+    console.log("Added document with ID: ", res.id);
+    Productid = res.id;
+  }
+  return Productid;
 };
 
 exports.app = functions.https.onRequest(app);
