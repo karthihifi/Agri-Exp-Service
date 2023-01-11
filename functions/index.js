@@ -18,6 +18,7 @@ admin.initializeApp({
 const db = admin.firestore();
 const batch = db.batch();
 const ProductsRef = db.collection("Products");
+const UserDataRef = db.collection("UserData");
 const AgriImpexModalRef = new AgriImpexModal();
 let Currseason = String(AgriImpexModalRef.currentSeason);
 console.log("Current Season", Currseason);
@@ -33,11 +34,20 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //     extended: true,
 //   })
 // );
-const PORT = 3000; //process.env.PORT || 3000;
+const PORT = 4000; //process.env.PORT || 3000;
 
 app.get("/YieldStat", (req, res) => {
   res.status(200);
   getProductsData().then((resp) => {
+    res.json(resp);
+  });
+});
+
+app.get("/UserData", (req, res) => {
+  res.status(200);
+  console.log(req.query);
+  let User = String(req.query.user);
+  getUserData(User).then((resp) => {
     res.json(resp);
   });
 });
@@ -106,6 +116,13 @@ const getProductsData = async () => {
     ProductData.push(Productitem);
   });
   return ProductData;
+};
+
+const getUserData = async (UserDetails) => {
+  const User = await UserDataRef.doc(String(UserDetails)).get();
+  console.log(User.data());
+  UserData = User.data();
+  return UserData;
 };
 
 // const setProductData = async (Product) => {
