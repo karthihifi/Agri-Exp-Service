@@ -6,5 +6,4 @@ class AgriImpexModal {
     this.currentSeason = prevYear + " - " + currentYear;
   }
 }
-
-export default AgriImpexModal;
+module.exports = { AgriImpexModal };

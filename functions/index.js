@@ -9,7 +9,7 @@ const {
   FieldValue,
 } = require("firebase-admin/firestore");
 const credentials = require("./servicekey.json");
-const AgriImpexModal = require("./Modal");
+const { AgriImpexModal } = require("./Modal");
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
@@ -18,11 +18,11 @@ admin.initializeApp({
 const db = admin.firestore();
 const batch = db.batch();
 const ProductsRef = db.collection("Products");
-const CurrSeasonRef = db
-  .collection("YieldStats")
-  .doc(AgriImpexModal.currentSeason);
+const AgriImpexModalRef = new AgriImpexModal();
+let Currseason = String(AgriImpexModalRef.currentSeason);
+console.log("Current Season", Currseason);
+const CurrSeasonRef = db.collection("YieldStats").doc(Currseason);
 
-const AgriImpexModalRef = AgriImpexModal();
 // const conn = hana.createConnection();
 
 const app = express();
