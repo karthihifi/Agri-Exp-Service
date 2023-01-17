@@ -19,6 +19,7 @@ const db = admin.firestore();
 const batch = db.batch();
 const ProductsRef = db.collection("Products");
 const UserDataRef = db.collection("UserData");
+const AreaDBRef = db.collection("AreaDB");
 const AgriImpexModalRef = new AgriImpexModal();
 let Currseason = String(AgriImpexModalRef.currentSeason);
 console.log("Current Season", Currseason);
@@ -28,13 +29,24 @@ const CurrSeasonRef = db.collection("YieldStats").doc(Currseason);
 
 const app = express();
 app.use(cors());
+app.options("*", cors());
+
 app.use(bodyParser.json({ type: "application/*+json" }));
+// app.all(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
+
 // app.use(
 //   bodyParser.urlencoded({
 //     extended: true,
 //   })
 // );
-const PORT = 4000; //process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.get("/YieldStat", (req, res) => {
   res.status(200);
@@ -50,6 +62,33 @@ app.get("/UserData", (req, res) => {
   getUserData(User).then((resp) => {
     res.json(resp);
   });
+});
+
+app.post("/NewArea", function (req, res) {
+  let Area = {
+    AreaID: req.body.AreaID,
+    Zone: req.body.Zone,
+    AreaName: req.body.AreaName,
+    TotalHectare: req.body.TotalHectare,
+    TotalHectareRef: req.body.TotalHectareRef,
+    Plantation: req.body.Plantation,
+    Owner: req.body.Owner,
+    Contactno: req.body.Contactno,
+    Email: req.body.Email,
+    Village: req.body.Village,
+    TownPanchayat: req.body.TownPanchayat,
+    District: req.body.District,
+    Pincode: req.body.Pincode,
+    Address: req.body.Address,
+    Createdby: req.body.Createdby,
+    Createdon: Timestamp.now(),
+  };
+
+  let District = String(Area.District);
+  let Panchayat = String(Area.TownPanchayat);
+  const res = AreaDBRef.doc(District).collection(Panchayat).add(Area);
+  res.status(200);
+  res.send(`Data Added Succesfully ${res.id}`);
 });
 
 app.post("/Product", function (req, res) {
