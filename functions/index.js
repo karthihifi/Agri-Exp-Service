@@ -46,7 +46,7 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //     extended: true,
 //   })
 // );
-const PORT = process.env.PORT || 3000;
+const PORT = 3000; //process.env.PORT || 3000;
 
 app.get("/YieldStat", (req, res) => {
   res.status(200);
@@ -86,9 +86,9 @@ app.post("/NewArea", function (req, res) {
 
   let District = String(Area.District);
   let Panchayat = String(Area.TownPanchayat);
-  const res = AreaDBRef.doc(District).collection(Panchayat).add(Area);
+  const resp = AreaDBRef.doc(District).collection(Panchayat).add(Area);
   res.status(200);
-  res.send(`Data Added Succesfully ${res.id}`);
+  res.send(`Data Added Succesfully ${resp.id}`);
 });
 
 app.post("/Product", function (req, res) {
