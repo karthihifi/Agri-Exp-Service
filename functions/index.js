@@ -24,6 +24,7 @@ const AgriImpexModalRef = new AgriImpexModal();
 let Currseason = String(AgriImpexModalRef.currentSeason);
 console.log("Current Season", Currseason);
 const CurrSeasonRef = db.collection("YieldStats").doc(Currseason);
+const Yieldref = db.collection("YieldStats");
 
 // const conn = hana.createConnection();
 
@@ -46,11 +47,12 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //     extended: true,
 //   })
 // );
-const PORT = 3000; //process.env.PORT || 3000;
+const PORT = 3011; //process.env.PORT || 3000;
 
 app.get("/YieldStat", (req, res) => {
   res.status(200);
-  getProductsData().then((resp) => {
+
+  getProductsData1().then((resp) => {
     res.json(resp);
   });
 });
@@ -153,6 +155,58 @@ const getProductsData = async () => {
     Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
     Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
     ProductData.push(Productitem);
+  });
+  return ProductData;
+};
+
+const getProductsData1 = async () => {
+  let ProductData = [];
+  let Productitem = {};
+  const Season = await Yieldref.get();
+  Season.forEach((Area) => {
+    console.log(Area.id);
+  });
+  // getAreaRef(Season).then((resp)=>{
+  //   ProductData = resp
+  // })
+  return ProductData;
+  // Season.forEach(async (doc) => {
+  //   console.log(doc.id, "dada");
+  //   let AreaRef = await Yieldref.doc(doc.id).listCollections();
+  //   AreaRef.forEach(async (Area) => {
+  //     let ProductsRef = await Area.get();
+  //     ProductsRef.forEach((Product) => {
+  //       Productitem = Product.data();
+  //       Productitem.id = Product.id;
+  //       let epochTimestamp = Productitem.Createdon.toMillis();
+  //       Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+  //       Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
+  //       ProductData.push(Productitem);
+  //     });
+  //   });
+  // });
+  // console.log(ProductData);
+  // return ProductData;
+};
+
+const getAreaRef = async (Season) => {
+  let ProductData = [];
+  let Productitem = {};
+
+  Season.forEach(async (doc) => {
+    console.log(doc.id, "dada");
+    let AreaRef = await Yieldref.doc(doc.id).listCollections();
+    AreaRef.forEach(async (Area) => {
+      let ProductsRef = await Area.get();
+      ProductsRef.forEach((Product) => {
+        Productitem = Product.data();
+        Productitem.id = Product.id;
+        let epochTimestamp = Productitem.Createdon.toMillis();
+        Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+        Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
+        ProductData.push(Productitem);
+      });
+    });
   });
   return ProductData;
 };
