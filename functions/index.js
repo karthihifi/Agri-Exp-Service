@@ -47,12 +47,31 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //     extended: true,
 //   })
 // );
-const PORT = 3011; //process.env.PORT || 3000;
+const PORT = 3022; //process.env.PORT || 3000;
 
-app.get("/YieldStat", (req, res) => {
+app.get("/YieldStat", async (req, res) => {
   res.status(200);
+  // let SeasonOverView = {
+  //   SeasonStat: [],
+  //   ProductsData: [],
+  // };
+
+  // let Season = [];
+  // const SeasonRef = await Yieldref.get();
+  // SeasonRef.forEach(async (Seasons) => {
+  //   Season.push(Seasons.id);
+  //   SeasonOverView.SeasonStat.push(Seasons.id);
+  // });
+
+  // getSeasonData(Season).then((resp) => {
+  //   getProductRefs(resp.flat()).then((Products) => {
+  //     SeasonOverView.ProductsData = Products.flat();
+  //     res.json(SeasonOverView);
+  //   });
+  // });
 
   getProductsData1().then((resp) => {
+    console.log(resp, "resp");
     res.json(resp);
   });
 });
@@ -159,36 +178,107 @@ const getProductsData = async () => {
   return ProductData;
 };
 
-const getProductsData1 = async () => {
+const getProducts = (Products) => {
   let ProductData = [];
   let Productitem = {};
-  const Season = await Yieldref.get();
-  Season.forEach((Area) => {
-    console.log(Area.id);
+  Products.forEach((doc) => {
+    Productitem = doc.data();
+    Productitem.id = doc.id;
+    let epochTimestamp = Productitem.Createdon.toMillis();
+    Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+    Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
+    ProductData.push(Productitem);
   });
-  // getAreaRef(Season).then((resp)=>{
-  //   ProductData = resp
-  // })
   return ProductData;
-  // Season.forEach(async (doc) => {
-  //   console.log(doc.id, "dada");
-  //   let AreaRef = await Yieldref.doc(doc.id).listCollections();
-  //   AreaRef.forEach(async (Area) => {
-  //     let ProductsRef = await Area.get();
-  //     ProductsRef.forEach((Product) => {
-  //       Productitem = Product.data();
-  //       Productitem.id = Product.id;
-  //       let epochTimestamp = Productitem.Createdon.toMillis();
-  //       Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
-  //       Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
-  //       ProductData.push(Productitem);
-  //     });
-  //   });
-  // });
-  // console.log(ProductData);
-  // return ProductData;
 };
 
+const getProductRefs = async (AreaRef) => {
+  // let ProductsRef = await Productref.get();
+  const promises = AreaRef.map(async (Arearefs) => {
+    const ProductsRef = await Arearefs.get();
+    // console.log(ProductsRef, "asdafq");
+    let ProductData = [];
+    ProductsRef.forEach((Product) => {
+      Productitem = Product.data();
+      Productitem.id = Product.id;
+      // console.log(Productitem)
+      let epochTimestamp = Productitem.Createdon.toMillis();
+      Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+      Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
+      ProductData.push(Productitem);
+    });
+    // console.log(ProductData,"Data")
+    return ProductData;
+  });
+
+  const getdata1 = await Promise.all(promises).then((ProductRef) => {
+    // console.log(ProductRef, "ProductData");
+    return ProductRef;
+  });
+  return getdata1;
+};
+const getSeasonData = async (SeasonId) => {
+  // let Productitem = {};
+  // let ProductData = [];
+  // let Areasref = []
+  // console.log(SeasonId.length, typeof SeasonId, SeasonId, "season");
+  const promises = SeasonId.map(async (Season) => {
+    console.log(Season);
+    const Arearef = await Yieldref.doc(Season).listCollections();
+    return Arearef;
+    // Arearef.forEach(async (Productref) => {
+    //   let ProductsRef = await Productref.get();
+    //   console.log("Call1");
+    //   ProductsRef.forEach((Product) => {
+    //     Productitem = Product.data();
+    //     Productitem.id = Product.id;
+    //     let epochTimestamp = Productitem.Createdon.toMillis();
+    //     Productitem.Createdon = new Date(epochTimestamp).toLocaleDateString();
+    //     Productitem.Createdat = new Date(epochTimestamp).toLocaleTimeString();
+    //     ProductData.push(Productitem);
+    //   });
+    // });
+  });
+
+  const getdata = await Promise.all(promises).then((AreaRef) => {
+    // console.log(AreaRef, "asda");
+    return AreaRef;
+  });
+  return getdata;
+  // console.log("Callfinal");
+  // return ProductData;
+  // await Promise.all(Promises).then(() => {
+  //   return ProductData;
+  // });
+};
+const getProductsData1 = async () => {
+  let Season = [];
+  const SeasonRef = await Yieldref.get();
+  SeasonRef.forEach(async (Seasons) => {
+    Season.push(Seasons.id);
+  });
+
+  return getAllData(Season).then((resp) => {
+    console.log(resp, "callfianl");
+    return resp;
+  });
+  // return ProductData;
+  // getSeasonData(Season).then((resp) => {
+  //   getProductRefs(resp.flat()).then((Products) => {
+  //     // console.log(Products.flat(),Products.flat().length, "ProductRef");
+  //     return Products.flat();
+  //   });
+  // });
+};
+
+const getAllData = (Season) => {
+  return getSeasonData(Season).then((resp) => {
+    return getProductRefs(resp.flat()).then((Products) => {
+      console.log(Products.flat().length, "ProductRef");
+      return Products.flat();
+    });
+  });
+};
 const getAreaRef = async (Season) => {
   let ProductData = [];
   let Productitem = {};
