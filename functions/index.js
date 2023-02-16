@@ -47,7 +47,7 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 //     extended: true,
 //   })
 // );
-const PORT = 3022; //process.env.PORT || 3000;
+const PORT = 3004; //process.env.PORT || 3000;
 
 app.get("/YieldStat", async (req, res) => {
   res.status(200);
@@ -119,6 +119,7 @@ app.post("/Product", function (req, res) {
 
   let Productlist = [];
   let Product = {
+    Season: req.body.Season,
     Area: req.body.Area,
     Product: req.body.Product,
     Variety: req.body.Variety,
@@ -259,16 +260,61 @@ const getProductsData1 = async () => {
   });
 
   return getAllData(Season).then((resp) => {
-    console.log(resp, "callfianl");
-    return resp;
+    // console.log(resp, "callfianl");
+    let YieldData = groupYieldData(Season, resp);
+    let FinalData = {
+      YieldData: YieldData,
+      AllData: resp,
+    };
+    console.log(FinalData);
+    return FinalData; //resp;
   });
-  // return ProductData;
-  // getSeasonData(Season).then((resp) => {
-  //   getProductRefs(resp.flat()).then((Products) => {
-  //     // console.log(Products.flat(),Products.flat().length, "ProductRef");
-  //     return Products.flat();
-  //   });
-  // });
+};
+
+const groupYieldData = (Seasons, AllData) => {
+  let SeasonsD = [];
+  // let Alldatas = Object.values(AllData);
+  Seasons.forEach((Season) => {
+    let SeasonData = AllData.filter((item) => {
+      return item.Season == String(Season);
+    });
+    console.log(AllData, String(Season), SeasonData, "adadfasq");
+    let FinalData = {
+      Season: Season,
+      ProductCount: SeasonData.length,
+      ProductData: getProductDataPerSeson(SeasonData),
+    };
+    SeasonsD.push(FinalData);
+  });
+  console.log(SeasonsD, "Grouping");
+  return SeasonsD;
+};
+
+const getProductDataPerSeson = (SeasonData) => {
+  const uniqueProducts = [...new Set(SeasonData.map((item) => item.Product))];
+  let Products = [];
+  uniqueProducts.forEach((item) => {
+    let FilteredProduct = SeasonData.filter((prod) => {
+      return prod.Product == item;
+    });
+    console.log(item,FilteredProduct, "Producrt", uniqueProducts);
+    let Product = {
+      Product: item,
+      TotalCount: FilteredProduct.length,
+      NetWeight: FilteredProduct.reduce((acc, curr) => acc + curr.NetWeight, 0),
+      AvgWeight:
+        FilteredProduct.reduce((acc, curr) => acc + curr.NetWeight, 0) /
+        FilteredProduct.length,
+      AvgLeavesCount:
+        FilteredProduct.reduce((acc, curr) => acc + curr.NoofLeaves, 0) /
+        FilteredProduct.length,
+      AvgLength:
+        FilteredProduct.reduce((acc, curr) => acc + curr.Length, 0) /
+        FilteredProduct.length,
+    };
+    Products.push(Product);
+  });
+  return Products;
 };
 
 const getAllData = (Season) => {
